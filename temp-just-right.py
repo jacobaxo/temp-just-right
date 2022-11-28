@@ -2,17 +2,21 @@ from bs4 import BeautifulSoup
 from requests import get
 import requests
 
-city = "youngstown"
-url = "https://www.google.com/search?q="+"weather"+city
-html = requests.get(url).content
-soup = BeautifulSoup(html, 'html.parser')
-temp = soup.find('div', attrs={'class': 'BNeawe iBp4i AP7Wnd'}).text
+url = "https://www.wunderground.com/weather/us/oh/canfield/41.02,-80.76"
+response = requests.get(url)
+soup=BeautifulSoup(response.content, 'html.parser')
+temp = soup.find(class_= 'wu-value wu-value-to')
+
+print(temp.text)
+int_temp = int(temp.text)
+
+comfortatbility = ''
 
 if temp >= 90:
-    print (f"the temp is {temp} and its way to hot")
+    comfortatbility = 'its too hot'
 elif temp >= 65:
-    print (f"its {temp} and its just right")
+    comfortatbility = 'its just right'
 elif temp <= 65:
-    print (f"its {temp} and its way too cold")
+    comfortatbility = 'its too cold'
 
-#i did this right but it wont work 
+print(f"the current temp is {int_temp}. Its {comfortatbility}")
